@@ -21,20 +21,45 @@ function buildButton(value) {
   $('#buttons-container').append($newButton);
 }
 
-function createImg(src) {
-  var $newImg = $('<img>');
-  $newImg.attr('src', src);
-  $('#gif-container').append($newImg);
+function createImg(imgObj) {
+  var $newImg = $('<img>',{
+    data: {
+      'stopped': imgObj.fixed_width_still.url,
+      'animated': imgObj.fixed_width.url,
+      'state': 'stopped'
+    },
+    class: "img-responsive",
+    src: imgObj.fixed_width_still.url
+  });
+
+  $('#gif-container').append($('<li>', {
+    class: 'img-container'
+  }).append($newImg));
 }
 
-function postAjaxObject(doThis, search, parameter) {
+function postAjaxObject(doThis, search, parameter, numItems) {
   $.ajax({
     url: 'http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=dc6zaTOxFJmzC',
     method: "GET",
-    custom: parameter
+    custom: function () {
+      if(parameter){
+        this.parameter = parameter;
+        return true;
+      }else{
+        return false;
+      }
+    }
   }).done(function (response) {
-    //globalObj = response;
-    doThis(response.data[0].images.fixed_width[this.custom]);
+    var data = response.data;
+    // TODO: Perhaps clear the img container here because of async overlap
+
+    for(var i = 0; i < numItems; i++){
+      if(this.custom()){
+        doThis(data[i][this.parameter]);
+      }else{
+        doThis(data[i]);
+      }
+    }
   })
 }
 
@@ -53,9 +78,9 @@ $(document).ready(function () {
   });
 
   $('#buttons-container').on('click', '.api-query', function () {
-    //console.log("Value is: " + $(this).attr('data-query'));
-    postAjaxObject(createImg, $(this).attr('data-query'), 'url');
+    $('#gif-container').empty();
+    postAjaxObject(createImg, $(this).attr('data-query'), 'images', 5);
   })
 
-  
+
 });
