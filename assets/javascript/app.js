@@ -38,7 +38,8 @@ function createImg(imgObj) {
 
 function postAjaxObject(doThis, search, parameter, numItems) {
   $.ajax({
-    url: 'http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=dc6zaTOxFJmzC',
+    url: 'http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=dc6zaTOxFJmzC&offset='
+    + Math.floor(Math.random() * 3) * 25,
     method: "GET",
     custom: function () {
       if(parameter){
