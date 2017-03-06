@@ -24,11 +24,11 @@ function buildButton(value) {
 function createImg(imgObj) {
   var $newImg = $('<img>',{
     data: {
-      'stopped': imgObj.fixed_width_still.url,
-      'animated': imgObj.fixed_width.url,
-      'state': 'stopped'
+      "stop": imgObj.fixed_width_still.url,
+      "animate": imgObj.fixed_width.url,
+      "state": "stop"
     },
-    class: "img-responsive",
+    class: "img-responsive image-gifs",
     src: imgObj.fixed_width_still.url
   });
 
@@ -89,9 +89,24 @@ $(document).ready(function () {
   });
 
   $('#buttons-container').on('click', '.api-query', function () {
+
     $('#gif-container').empty();
     postAjaxObject(createImg, $(this).attr('data-query'), 'images', 10);
-  })
 
+  });
+
+  $('#gif-container').on('click', '.image-gifs', function () {
+
+    var state = $(this).data("state");
+
+    if(state == "stop"){
+      $(this).attr('src', $(this).data("animate"));
+      $(this).data("state", 'animate')
+    }else{
+      $(this).attr('src', $(this).data("stop"));
+      $(this).data("state", 'stop')
+    }
+    
+  })
 
 });
