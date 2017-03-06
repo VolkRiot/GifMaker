@@ -1,7 +1,7 @@
 
-var animals = ['Cat', 'Dog', 'Skunk', 'Possum', 'Sloth'];
+var animals = ['Cat', 'Dog', 'Skunk', 'Possum', 'Sloth', 'Corgi'];
 
-// TODO: Remove Debugger
+// TODO: Remove Debugger and REFACTOR REFACTOR REFACTOR!!
 var globalObj = {};
 ///////////////////////////////////////////////
 
@@ -56,6 +56,7 @@ function postAjaxObject(doThis, search, parameter, numItems) {
     var prevRandIndexes = [];
 
     // TODO: Perhaps clear the img container here because of async overlap
+    globalObj = response;
 
     for(var i = 0; i < numItems; i++){
       randIndex = Math.floor(Math.random() * dataSize);
@@ -84,6 +85,7 @@ $(document).ready(function () {
 
     if($('#input-bar').val()){
       buildButton();
+      $('#input-bar').val('');
     }
 
   });
@@ -106,7 +108,7 @@ $(document).ready(function () {
       $(this).attr('src', $(this).data("stop"));
       $(this).data("state", 'stop')
     }
-    
+
   })
 
 });
