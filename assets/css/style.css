@@ -9,3 +9,7 @@
 .img-container{
     margin: 5px;
 }
+
+.image-gifs{
+    max-height: 150px;
+}
