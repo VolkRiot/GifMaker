@@ -9,15 +9,14 @@ function buildButton(value) {
   var $newButton = $('<button>');
 
   if(value){
-    $newButton.addClass('btn btn-success api-query');
     $newButton.attr('data-query', value);
     $newButton.text(value);
   }else{
     var $inputVal = $('#input-bar').val();
-    $newButton.addClass('btn btn-success api-query');
     $newButton.attr('data-query', $inputVal);
     $newButton.text($inputVal);
   }
+  $newButton.addClass('btn btn-success api-query');
   $('#buttons-container').append($newButton);
 }
 
