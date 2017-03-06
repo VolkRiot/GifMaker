@@ -1,5 +1,5 @@
 
-var animals = ['Cat', 'Dog', 'Skunk', 'Possum', 'Sloth', 'Corgi'];
+var topics = ['Cat', 'Dog', 'Skunk', 'Possum', 'Sloth', 'Corgi'];
 
 // TODO: Remove Debugger and REFACTOR REFACTOR REFACTOR!!
 var globalObj = {};
@@ -76,8 +76,8 @@ function postAjaxObject(doThis, search, parameter, numItems) {
 
 $(document).ready(function () {
 
-  for(var i = 0; i < animals.length; i++){
-    buildButton(animals[i]);
+  for(var i = 0; i < topics.length; i++){
+    buildButton(topics[i]);
   }
 
   $('#submit-input').on('click', function () {
