@@ -1,5 +1,5 @@
 
-var topics = ['Cat', 'Dog', 'Skunk', 'Possum', 'Sloth', 'Corgi'];
+var topics = ['Dachshund', 'Akita Inu', 'Boston Terrier', 'French Bulldog', 'Basset Hound', 'Corgi'];
 
 // TODO: Remove Debugger and REFACTOR REFACTOR REFACTOR!!
 var globalObj = {};
@@ -80,7 +80,9 @@ $(document).ready(function () {
     buildButton(topics[i]);
   }
 
-  $('#submit-input').on('click', function () {
+  $('#submit-input').on('click', function (event) {
+
+    event.preventDefault();
 
     if($('#input-bar').val()){
       buildButton();
