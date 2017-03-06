@@ -51,15 +51,26 @@ function postAjaxObject(doThis, search, parameter, numItems) {
     }
   }).done(function (response) {
     var data = response.data;
+    var dataSize = data.length;
+    var randIndex;
+    var prevRandIndexes = [];
+
     // TODO: Perhaps clear the img container here because of async overlap
 
     for(var i = 0; i < numItems; i++){
+      randIndex = Math.floor(Math.random() * dataSize);
+      while(prevRandIndexes.indexOf(randIndex) !== -1){
+        randIndex = Math.floor(Math.random() * dataSize);
+      }
+      prevRandIndexes.push(randIndex);
+
       if(this.custom()){
-        doThis(data[i][this.parameter]);
+        doThis(data[randIndex][this.parameter]);
       }else{
-        doThis(data[i]);
+        doThis(data[randIndex]);
       }
     }
+    prevRandIndexes = [];
   })
 }
 
@@ -79,7 +90,7 @@ $(document).ready(function () {
 
   $('#buttons-container').on('click', '.api-query', function () {
     $('#gif-container').empty();
-    postAjaxObject(createImg, $(this).attr('data-query'), 'images', 5);
+    postAjaxObject(createImg, $(this).attr('data-query'), 'images', 10);
   })
 
 
