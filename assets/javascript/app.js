@@ -62,6 +62,8 @@ function postAjaxObject(doThis, search, numItems) {
       doThis(data[randIndex]);
     }
     prevRandIndexes = [];
+  }).fail(function(err) {
+    throw err;
   })
 }
 
