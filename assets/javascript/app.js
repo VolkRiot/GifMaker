@@ -94,9 +94,12 @@ $(document).ready(function () {
 
   $('#buttons-container').on('click', '.api-query', function () {
 
+    var searchString = $(this).attr('data-query');
+
     $('#gif-container').empty();
 
-    postAjaxObject(createImg, $(this).attr('data-query'), 10);
+    postAjaxObject(createImg, searchString, 10);
+    searchAndPostYoutube(searchString);
 
   });
 
@@ -134,13 +137,12 @@ function createYoutubeVideo(tag ,id) {
   if(!YTplayer){
     onYouTubeIframeAPIReady();
   }else{
-
+    YTplayer.clearVideo();
+    YTplayer.loadVideoById(id);
   }
 }
 
-function searchYoutube(searchTerm) {
-
-  $('#player').empty();
+function searchAndPostYoutube(searchTerm) {
 
   $.ajax({
     url: 'https://www.googleapis.com/youtube/v3/search?part=id%2C+snippet&maxResults=5&q='+ searchTerm +'&key=' + myYTkey,
