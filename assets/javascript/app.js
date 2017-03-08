@@ -69,6 +69,12 @@ function postAjaxObject(doThis, search, numItems) {
 
 $(document).ready(function () {
 
+  // Async donwload and creation of the script for the youtube iFrame API
+  var $youtube = $('<script>');
+  $youtube.attr('src', "https://www.youtube.com/iframe_api");
+
+  $('body').append($youtube);
+
   for(var i = 0; i < topics.length; i++){
     buildButton(topics[i]);
   }
@@ -107,3 +113,34 @@ $(document).ready(function () {
   })
 
 });
+
+function createYoutubeVideo(id) {
+
+  var player;
+
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '390',
+      width: '640',
+      videoId: id,
+      events: {
+        'onReady': function (event) {
+          event.target.playVideo();
+        }
+      }
+    });
+  }
+  onYouTubeIframeAPIReady();
+}
+
+function searchYoutube(searchTerm) {
+  $.ajax({
+    url: 'https://www.googleapis.com/youtube/v3/search?part=id%2C+snippet&maxResults=5&q='+ searchTerm +'&key=AIzaSyBRIjZN5pF7DBZgPXEe3RtknLyfRTPwyx0',
+    method: "GET"
+  }).done(function (response) {
+
+    globalObj = response;
+
+    createYoutubeVideo(response.items[0].id.videoId)
+  })
+}
