@@ -4,6 +4,8 @@ var topics = ['Dachshund', 'Akita Inu', 'Boston Terrier', 'French Bulldog', 'Bas
 // TODO: Remove Debugger and REFACTOR REFACTOR REFACTOR!!
 var globalObj = {};
 ///////////////////////////////////////////////
+var YTplayer;
+var myYTkey = config.YTkey;
 
 function buildButton(value) {
   var $newButton = $('<button>');
@@ -114,12 +116,11 @@ $(document).ready(function () {
 
 });
 
-function createYoutubeVideo(id) {
-
-  var player;
+function createYoutubeVideo(tag ,id) {
 
   function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
+
+    YTplayer = new YT.Player(tag, {
       height: '390',
       width: '640',
       videoId: id,
@@ -130,17 +131,24 @@ function createYoutubeVideo(id) {
       }
     });
   }
-  onYouTubeIframeAPIReady();
+  if(!YTplayer){
+    onYouTubeIframeAPIReady();
+  }else{
+
+  }
 }
 
 function searchYoutube(searchTerm) {
+
+  $('#player').empty();
+
   $.ajax({
-    url: 'https://www.googleapis.com/youtube/v3/search?part=id%2C+snippet&maxResults=5&q='+ searchTerm +'&key=AIzaSyBRIjZN5pF7DBZgPXEe3RtknLyfRTPwyx0',
+    url: 'https://www.googleapis.com/youtube/v3/search?part=id%2C+snippet&maxResults=5&q='+ searchTerm +'&key=' + myYTkey,
     method: "GET"
   }).done(function (response) {
 
     globalObj = response;
 
-    createYoutubeVideo(response.items[0].id.videoId)
+    createYoutubeVideo('player', response.items[0].id.videoId)
   })
 }
