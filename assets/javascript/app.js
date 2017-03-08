@@ -23,32 +23,27 @@ function buildButton(value) {
 function createImg(imgObj) {
   var $newImg = $('<img>',{
     data: {
-      "stop": imgObj.fixed_width_still.url,
-      "animate": imgObj.fixed_width.url,
+      "stop": imgObj.images.fixed_width_still.url,
+      "animate": imgObj.images.fixed_width.url,
+      "rating": imgObj.rating,
       "state": "stop"
     },
     class: "img-responsive image-gifs",
-    src: imgObj.fixed_width_still.url
+    src: imgObj.images.fixed_width_still.url
   });
+
+  var $rating = $('<p class="h4 text-center">').text("Rating: " + $newImg.data("rating"));
 
   $('#gif-container').append($('<li>', {
     class: 'img-container'
-  }).append($newImg));
+  }).append($newImg, $rating));
 }
 
-function postAjaxObject(doThis, search, parameter, numItems) {
+function postAjaxObject(doThis, search, numItems) {
   $.ajax({
     url: 'http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=dc6zaTOxFJmzC&offset='
     + Math.floor(Math.random() * 3) * 25,
-    method: "GET",
-    custom: function () {
-      if(parameter){
-        this.parameter = parameter;
-        return true;
-      }else{
-        return false;
-      }
-    }
+    method: "GET"
   }).done(function (response) {
     var data = response.data;
     var dataSize = data.length;
@@ -64,12 +59,7 @@ function postAjaxObject(doThis, search, parameter, numItems) {
         randIndex = Math.floor(Math.random() * dataSize);
       }
       prevRandIndexes.push(randIndex);
-
-      if(this.custom()){
-        doThis(data[randIndex][this.parameter]);
-      }else{
-        doThis(data[randIndex]);
-      }
+      doThis(data[randIndex]);
     }
     prevRandIndexes = [];
   })
@@ -95,7 +85,8 @@ $(document).ready(function () {
   $('#buttons-container').on('click', '.api-query', function () {
 
     $('#gif-container').empty();
-    postAjaxObject(createImg, $(this).attr('data-query'), 'images', 10);
+
+    postAjaxObject(createImg, $(this).attr('data-query'), 10);
 
   });
 
