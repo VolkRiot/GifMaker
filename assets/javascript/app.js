@@ -7,17 +7,14 @@ var globalObj = {};
 
 function buildButton(value) {
   var $newButton = $('<button>');
+  var inputValue = value;
 
-  if(value){
-    $newButton.attr('data-query', value);
-    $newButton.text(value);
-  }else{
-    var $inputVal = $('#input-bar').val();
-    $newButton.attr('data-query', $inputVal);
-    $newButton.text($inputVal);
-  }
+  $newButton.attr('data-query', inputValue);
+  $newButton.text(inputValue);
+
   $newButton.addClass('btn btn-success api-query');
   $('#buttons-container').append($newButton);
+
 }
 
 function createImg(imgObj) {
@@ -69,6 +66,10 @@ function postAjaxObject(doThis, search, numItems) {
 
 $(document).ready(function () {
 
+  if(localStorage.getItem('topicsArray')){
+    topics = localStorage.getItem('topicsArray').split(',');
+  }
+
   for(var i = 0; i < topics.length; i++){
     buildButton(topics[i]);
   }
@@ -76,9 +77,11 @@ $(document).ready(function () {
   $('#submit-input').on('click', function (event) {
 
     event.preventDefault();
+    var searchTerm = $('#input-bar').val();
 
     if($('#input-bar').val()){
-      buildButton();
+      buildButton(searchTerm);
+      topics.push(searchTerm);
       $('#input-bar').val('');
     }
 
@@ -103,6 +106,12 @@ $(document).ready(function () {
       $(this).attr('src', $(this).data("stop"));
       $(this).data("state", 'stop')
     }
+
+  });
+
+  $('#save-button').on('click', function () {
+
+    localStorage.setItem('topicsArray', topics);
 
   })
 
