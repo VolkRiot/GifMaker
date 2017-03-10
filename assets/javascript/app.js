@@ -42,7 +42,7 @@ function createImg(imgObj) {
 function postAjaxObject(doThis, search, numItems) {
   $.ajax({
     url: 'http://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=dc6zaTOxFJmzC&offset='
-    + Math.floor(Math.random() * 3) * 25,
+    + Math.floor(Math.random() * 3) * 25 + '&rating=PG-13',
     method: "GET"
   }).done(function (response) {
     var data = response.data;
