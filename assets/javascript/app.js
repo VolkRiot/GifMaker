@@ -70,8 +70,7 @@ function postAjaxObject(doThis, search, numItems) {
       }
       prevRandIndexes = [];
     } else {
-      // TODO: Design an alert of some type here.
-      console.log("No go");
+      alert("Sorry, but Giphy could not find any results for " + search);
     }
   });
 }
