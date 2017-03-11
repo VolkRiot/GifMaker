@@ -25,7 +25,7 @@ function createImg(imgObj) {
     data: {
       "stop": imgObj.images.fixed_width_still.url,
       "animate": imgObj.images.fixed_width.url,
-      "rating": imgObj.rating,
+      "rating": imgObj.rating.toUpperCase(),
       "state": "stop"
     },
     class: "img-responsive image-gifs",
