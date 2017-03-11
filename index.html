@@ -12,8 +12,7 @@
 <body>
 <div class="container">
   <div class="row">
-    <div class="col-md-12" id="buttons-container">
-      <!--Here be buttons-->
+    <div class="col-md-12" id="space-top">
     </div>
   </div>
   <div class="row">
@@ -25,7 +24,22 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-1" id="save-button-container">
+      <button type="button" class="btn btn-default btn-sm" id="save-button">
+        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Save
+      </button>
+    </div>
+    <div class="col-md-11" id="delete-button-container">
+      <button type="button" class="btn btn-default btn-sm" id="delete-button" data-active="false">
+        <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Delete
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2" id="buttons-container">
+      <!--Here be buttons-->
+    </div>
+    <div class="col-md-10">
       <ul class="list-inline" id="gif-container">
         <!--Here be Gifs-->
       </ul>

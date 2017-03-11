@@ -12,17 +12,15 @@ var myYTkey = config.YTkey;
 
 function buildButton(value) {
   var $newButton = $('<button>');
+  var inputValue = value;
 
-  if(value){
-    $newButton.attr('data-query', value);
-    $newButton.text(value);
-  }else{
-    var $inputVal = $('#input-bar').val();
-    $newButton.attr('data-query', $inputVal);
-    $newButton.text($inputVal);
-  }
+  $newButton.attr('data-query', inputValue);
+  $newButton.attr('data-delete', false);
+  $newButton.text(inputValue);
+
   $newButton.addClass('btn btn-success api-query');
   $('#buttons-container').append($newButton);
+
 }
 
 function createImg(imgObj) {
@@ -55,21 +53,27 @@ function postAjaxObject(doThis, search, numItems) {
     var randIndex;
     var prevRandIndexes = [];
 
-    // TODO: Perhaps clear the img container here because of async overlap
-    globalObj = response;
+    // TODO: Debugging - Remove
+    //globalObj = response;
 
-    for(var i = 0; i < numItems; i++){
-      randIndex = Math.floor(Math.random() * dataSize);
-      while(prevRandIndexes.indexOf(randIndex) !== -1){
+    if (dataSize != 0) {
+
+      for (var i = 0; i < numItems; i++) {
         randIndex = Math.floor(Math.random() * dataSize);
+
+        while (prevRandIndexes.indexOf(randIndex) !== -1) {
+          randIndex = Math.floor(Math.random() * dataSize);
+        }
+
+        prevRandIndexes.push(randIndex);
+        doThis(data[randIndex]);
       }
-      prevRandIndexes.push(randIndex);
-      doThis(data[randIndex]);
+      prevRandIndexes = [];
+    } else {
+      // TODO: Design an alert of some type here.
+      console.log("No go");
     }
-    prevRandIndexes = [];
-  }).fail(function(err) {
-    throw err;
-  })
+  });
 }
 
 $(document).ready(function () {
@@ -80,6 +84,10 @@ $(document).ready(function () {
 
   $('body').append($youtube);
 
+  if(localStorage.getItem('topicsArray')){
+    topics = localStorage.getItem('topicsArray').split(',');
+  }
+
   for(var i = 0; i < topics.length; i++){
     buildButton(topics[i]);
   }
@@ -87,9 +95,11 @@ $(document).ready(function () {
   $('#submit-input').on('click', function (event) {
 
     event.preventDefault();
+    var searchTerm = $('#input-bar').val();
 
     if($('#input-bar').val()){
-      buildButton();
+      buildButton(searchTerm);
+      topics.push(searchTerm);
       $('#input-bar').val('');
     }
 
@@ -101,8 +111,12 @@ $(document).ready(function () {
 
     $('#gif-container').empty();
 
-    postAjaxObject(createImg, searchString, 10);
     searchAndPostYoutube(searchString);
+
+    if($(this).attr('data-delete') !== 'true'){
+      $('#gif-container').empty();
+      postAjaxObject(createImg, searchString, 10);
+    }
 
   });
 
@@ -118,7 +132,45 @@ $(document).ready(function () {
       $(this).data("state", 'stop')
     }
 
-  })
+  });
+
+  $('#save-button').on('click', function () {
+
+    localStorage.setItem('topicsArray', topics);
+
+  });
+
+  $('#delete-button').on('click', function () {
+
+    var buttonsList = $('#buttons-container').children('.api-query');
+
+    if($('#delete-button').attr('data-active') == 'true'){
+
+      $('#delete-button').attr('data-active', 'false');
+      $(buttonsList).attr('data-delete', 'false');
+      $('#delete-button').removeClass('btn-danger').addClass('btn-default');
+      $(buttonsList).attr('class', 'btn btn-success api-query');
+
+    }else if($('#delete-button').attr('data-active') == 'false'){
+
+      $('#delete-button').attr('data-active', 'true');
+      $(buttonsList).attr('data-delete', 'true');
+      $('#delete-button').removeClass('btn-default').addClass('btn-danger');
+      $(buttonsList).attr('class', 'btn btn-danger api-query');
+    }
+
+    $('#buttons-container').on('click', '.api-query', function () {
+
+      if($('#delete-button').attr('data-active') == 'true'){
+        var buttonData = $(this).attr('data-query');
+        topics.splice(topics.indexOf(buttonData), 1);
+        localStorage.setItem('topicsArray', topics);
+        $(this).remove();
+      }
+
+    });
+
+  });
 
 });
 
