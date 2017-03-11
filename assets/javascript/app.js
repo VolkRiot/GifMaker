@@ -48,21 +48,27 @@ function postAjaxObject(doThis, search, numItems) {
     var randIndex;
     var prevRandIndexes = [];
 
-    // TODO: Perhaps clear the img container here because of async overlap
-    globalObj = response;
+    // TODO: Debugging - Remove
+    //globalObj = response;
 
-    for(var i = 0; i < numItems; i++){
-      randIndex = Math.floor(Math.random() * dataSize);
-      while(prevRandIndexes.indexOf(randIndex) !== -1){
+    if (dataSize != 0) {
+
+      for (var i = 0; i < numItems; i++) {
         randIndex = Math.floor(Math.random() * dataSize);
+
+        while (prevRandIndexes.indexOf(randIndex) !== -1) {
+          randIndex = Math.floor(Math.random() * dataSize);
+        }
+
+        prevRandIndexes.push(randIndex);
+        doThis(data[randIndex]);
       }
-      prevRandIndexes.push(randIndex);
-      doThis(data[randIndex]);
+      prevRandIndexes = [];
+    } else {
+      // TODO: Design an alert of some type here.
+      console.log("No go");
     }
-    prevRandIndexes = [];
-  }).fail(function(err) {
-    throw err;
-  })
+  });
 }
 
 $(document).ready(function () {
@@ -122,11 +128,14 @@ $(document).ready(function () {
     var buttonsList = $('#buttons-container').children('.api-query');
 
     if($('#delete-button').attr('data-active') == 'true'){
+
       $('#delete-button').attr('data-active', 'false');
       $(buttonsList).attr('data-delete', 'false');
       $('#delete-button').removeClass('btn-danger').addClass('btn-default');
       $(buttonsList).attr('class', 'btn btn-success api-query');
+
     }else if($('#delete-button').attr('data-active') == 'false'){
+
       $('#delete-button').attr('data-active', 'true');
       $(buttonsList).attr('data-delete', 'true');
       $('#delete-button').removeClass('btn-default').addClass('btn-danger');
