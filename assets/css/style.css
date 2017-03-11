@@ -2,7 +2,7 @@
     margin: 1% 0 1% 0;
 }
 
-.btn-success{
+.btn{
     margin: 3px 5px 3px 0;
 }
 
@@ -12,4 +12,8 @@
 
 .image-gifs{
     max-height: 150px;
+}
+
+#space-top{
+    width: 25px;
 }

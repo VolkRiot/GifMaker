@@ -10,6 +10,7 @@ function buildButton(value) {
   var inputValue = value;
 
   $newButton.attr('data-query', inputValue);
+  $newButton.attr('data-delete', false);
   $newButton.text(inputValue);
 
   $newButton.addClass('btn btn-success api-query');
@@ -89,9 +90,10 @@ $(document).ready(function () {
 
   $('#buttons-container').on('click', '.api-query', function () {
 
-    $('#gif-container').empty();
-
-    postAjaxObject(createImg, $(this).attr('data-query'), 10);
+    if($(this).attr('data-delete') !== 'true'){
+      $('#gif-container').empty();
+      postAjaxObject(createImg, $(this).attr('data-query'), 10);
+    }
 
   });
 
@@ -113,6 +115,35 @@ $(document).ready(function () {
 
     localStorage.setItem('topicsArray', topics);
 
-  })
+  });
+
+  $('#delete-button').on('click', function () {
+
+    var buttonsList = $('#buttons-container').children('.api-query');
+
+    if($('#delete-button').attr('data-active') == 'true'){
+      $('#delete-button').attr('data-active', 'false');
+      $(buttonsList).attr('data-delete', 'false');
+      $('#delete-button').removeClass('btn-danger').addClass('btn-default');
+      $(buttonsList).attr('class', 'btn btn-success api-query');
+    }else if($('#delete-button').attr('data-active') == 'false'){
+      $('#delete-button').attr('data-active', 'true');
+      $(buttonsList).attr('data-delete', 'true');
+      $('#delete-button').removeClass('btn-default').addClass('btn-danger');
+      $(buttonsList).attr('class', 'btn btn-danger api-query');
+    }
+
+    $('#buttons-container').on('click', '.api-query', function () {
+
+      if($('#delete-button').attr('data-active') == 'true'){
+        var buttonData = $(this).attr('data-query');
+        topics.splice(topics.indexOf(buttonData), 1);
+        localStorage.setItem('topicsArray', topics);
+        $(this).remove();
+      }
+
+    });
+
+  });
 
 });
