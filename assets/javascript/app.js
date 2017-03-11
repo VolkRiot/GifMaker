@@ -1,5 +1,7 @@
 
 var topics = ['Dachshund', 'Akita Inu', 'Boston Terrier', 'French Bulldog', 'Basset Hound', 'Corgi'];
+var prependString = '';
+var appendString = '';
 
 // TODO: Remove Debugger and REFACTOR REFACTOR REFACTOR!!
 var globalObj = {};
@@ -38,6 +40,9 @@ function createImg(imgObj) {
 }
 
 function postAjaxObject(doThis, search, numItems) {
+
+  search = prependString + search  + appendString;
+
   $.ajax({
     url: 'https://api.giphy.com/v1/gifs/search?q=' + search + '&api_key=dc6zaTOxFJmzC&offset='
     + Math.floor(Math.random() * 3) * 25 + '&rating=PG-13',
@@ -80,6 +85,35 @@ $(document).ready(function () {
   for(var i = 0; i < topics.length; i++){
     buildButton(topics[i]);
   }
+
+  $('.modifier-term').on('click', function () {
+
+    var $checkBox = $(this);
+
+    if($checkBox.is(":checked")){
+
+      if($checkBox.hasClass('prepend')){
+        prependString = $checkBox.attr('value') + " ";
+      }
+
+      if($checkBox.hasClass('append')){
+        appendString = " " + $checkBox.attr('value');
+      }
+
+    }else{
+
+      if($checkBox.hasClass('prepend')){
+        prependString = " ";
+      }
+
+      if($checkBox.hasClass('append')){
+        appendString = " ";
+      }
+
+    }
+
+
+  });
 
   $('#submit-input').on('click', function (event) {
 
