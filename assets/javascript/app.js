@@ -162,6 +162,12 @@ $(document).ready(function () {
   $('#save-button').on('click', function () {
 
     localStorage.setItem('topicsArray', topics);
+    $('#saved-alert').show();
+
+    function hideAlert() {
+      $('#saved-alert').hide();
+    }
+    setTimeout(hideAlert, 3000);
 
   });
 
