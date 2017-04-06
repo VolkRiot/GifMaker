@@ -75,6 +75,15 @@ function postAjaxObject(doThis, search, numItems) {
   });
 }
 
+function removeButton() {
+
+  var buttonData = $(this).attr('data-query');
+  topics.splice(topics.indexOf(buttonData), 1);
+  localStorage.setItem('topicsArray', topics);
+  $(this).remove();
+  
+}
+
 $(document).ready(function () {
 
   if(localStorage.getItem('topicsArray')){
@@ -166,6 +175,7 @@ $(document).ready(function () {
       $(buttonsList).attr('data-delete', 'false');
       $('#delete-button').removeClass('btn-danger').addClass('btn-default');
       $(buttonsList).attr('class', 'btn btn-success api-query');
+      $('#buttons-container').off('click', '.api-query', removeButton);
 
     }else if($('#delete-button').attr('data-active') == 'false'){
 
@@ -173,18 +183,8 @@ $(document).ready(function () {
       $(buttonsList).attr('data-delete', 'true');
       $('#delete-button').removeClass('btn-default').addClass('btn-danger');
       $(buttonsList).attr('class', 'btn btn-danger api-query');
+      $('#buttons-container').on('click', '.api-query', removeButton);
     }
-
-    $('#buttons-container').on('click', '.api-query', function () {
-
-      if($('#delete-button').attr('data-active') == 'true'){
-        var buttonData = $(this).attr('data-query');
-        topics.splice(topics.indexOf(buttonData), 1);
-        localStorage.setItem('topicsArray', topics);
-        $(this).remove();
-      }
-
-    });
 
   });
 
