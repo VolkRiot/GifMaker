@@ -21,4 +21,6 @@
 #saved-alert{
     display: none;
     z-index: 1;
+    position: fixed;
+    left: 40%;
 }
