@@ -1,11 +1,6 @@
-
 var topics = ['Dachshund', 'Akita Inu', 'Boston Terrier', 'French Bulldog', 'Basset Hound', 'Corgi'];
 var prependString = '';
 var appendString = '';
-
-// TODO: Remove Debugger and REFACTOR REFACTOR REFACTOR!!
-var globalObj = {};
-///////////////////////////////////////////////
 
 function buildButton(value) {
   var $newButton = $('<button>');
@@ -52,9 +47,6 @@ function postAjaxObject(doThis, search, numItems) {
     var dataSize = data.length;
     var randIndex;
     var prevRandIndexes = [];
-
-    // TODO: Debugging - Remove
-    //globalObj = response;
 
     if (dataSize != 0) {
 
